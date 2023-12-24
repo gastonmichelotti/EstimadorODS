@@ -121,7 +121,7 @@ def Estimar(fecha, duracion = 4):
     # Resultados óptimos
     configuracionOptima = resultado_optimizacion.x   
 
-    Resultados = {}
+    Resultados = []
 
     for i in range(len(horariosReservas)):
         configuracionOptima[i] = int(configuracionOptima[i])
@@ -129,12 +129,12 @@ def Estimar(fecha, duracion = 4):
         # resultado = (f"{horariosReservas[i][0]:02d}:00", f"{horariosReservas[i][1]:02d}:00", int(configuracionOptima[i]))
         # Resultados.append(resultado)
 
-
-        clave = f"turno: {i}"
-        Resultados[clave] = {
+        Resultados.append({
         'horaDesde': f"{horariosReservas[i][0]:02d}:00", 
         'horaHasta': f"{horariosReservas[i][1]:02d}:00", 
-        'cantidad': int(configuracionOptima[i])}
+        'cantidad': int(configuracionOptima[i])})
 
-    return Resultados
+    final = {"turnos" : Resultados}
+
+    return final
 

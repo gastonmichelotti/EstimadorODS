@@ -12,7 +12,7 @@ def estimadorODS():
     # Llama a tu función con los parámetros
     resultado = Estimar(fecha, duracion)
 
-    return jsonify(resultado)
+    return resultado
 
 if __name__ == '__main__':
     app.run(port=5001)
