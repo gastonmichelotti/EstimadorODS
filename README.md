@@ -50,7 +50,7 @@ Ejemplo de cuerpo de solicitud:
     "duracion": 4,
     "incremento_pct": 10,
     "incremento_pct_meli": 25,
-    "inicio_incremento_meli": 23,
+    "inicio_incremento_meli": 23
 }
 ```
 
