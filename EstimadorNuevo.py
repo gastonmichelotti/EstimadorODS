@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 import math  # Asegúrate de tener esta importación para math.ceil
 
 #parametros default hasta que javi modifique api y front para poder pasar estos nuevos params
-def Estimar(fecha, duracion=4, incremento_pct=10, incremento_pct_meli=35, inicio_incremento_meli=21):
+def Estimar(fecha, duracion=4, incremento_pct=5, incremento_pct_meli=25, inicio_incremento_meli=23):
     class Reserva:
         def __init__(self, horaDesde, horaHasta):
             self.horaDesde = horaDesde
