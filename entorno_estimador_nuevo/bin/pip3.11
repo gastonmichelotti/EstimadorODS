@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/Gaston/Desktop/Estimador Nuevo/entorno_estimador_nuevo/bin/python3.11" "$0" "$@"
+'''exec' "/Users/Gaston/Projects/Estimador Nuevo/entorno_estimador_nuevo/bin/python" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
