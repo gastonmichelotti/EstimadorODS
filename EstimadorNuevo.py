@@ -93,10 +93,10 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
     disponibilidadFinal = calcular_disponibilidad(configuracionIncrementada)
 
     final = {
-        "turnos": Resultados,
-        "disponibilidadFinal": disponibilidadFinal,
-        "necesidadesMeli": reservasMeli,
-        "totalReservas" : sum(configuracionIncrementada)
+        "turnos": Resultados
+        # "disponibilidadFinal": disponibilidadFinal,
+        # "necesidadesMeli": reservasMeli,
+        # "totalReservas" : sum(configuracionIncrementada)
     }
 
     return final
