@@ -6,13 +6,16 @@ app = Flask(__name__)
 @app.route('/estimadorODS', methods=['POST'])
 def estimadorODS():
     data = request.get_json()
-    fecha = data['fecha']
-    incremento_pct = data['incremento_pct']
-    incremento_pct_meli = data['incremento_pct_meli']
-    inicio_incremento_meli = data['inicio_incremento_meli']
+    fecha = data.get('fecha')
+    incremento_pct = data.get('incremento_pct') 
+    incremento_pct_meli = data.get('incremento_pct_meli') 
+    inicio_incremento_meli = data.get('inicio_incremento_meli')
 
-    # Llama a tu función con los parámetros
-    resultado = Estimar(fecha,incremento_pct,incremento_pct_meli,inicio_incremento_meli)
+    # Llama a tu función con los parámetros usando valores por defecto
+    resultado = Estimar(fecha,
+                        incremento_pct if incremento_pct is not None else 0 ,
+                        incremento_pct_meli if incremento_pct_meli is not None else 20,
+                        inicio_incremento_meli if inicio_incremento_meli is not None else 22)
 
     return resultado
 
