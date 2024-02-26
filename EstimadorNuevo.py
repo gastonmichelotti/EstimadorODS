@@ -64,13 +64,16 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
         return sum((rm - rd)**2 for rm, rd in zip(valoresMeliIncrementados, disponibilidad)) + sum(config)
 
     def convertir_horas(value):
-        hours = int(value)  # Parte entera para las horas
-        minutes = int((value - hours) * 60)  # Parte decimal convertida a minutos
+        
+        #Convierto formato de horas de numero a string fixeando horarios 24 a horarios 00
+        hours = int(value) if int(value) < 24 else 0  # Parte entera para las horas
+        minutes = int(((value - hours) if hours != 0 else (value - 24)) * 60)  # Parte decimal convertida a minutos
         
         # Formatear como HH:MM
         time_string = f"{hours:02d}:{minutes:02d}"
         
         return time_string
+
 
 
     valores_iniciales = [valoresMeliIncrementados[0]] * len(horariosReservas)
