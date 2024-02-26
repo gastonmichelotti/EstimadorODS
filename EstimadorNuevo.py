@@ -78,7 +78,7 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
 
     valores_iniciales = [valoresMeliIncrementados[0]] * len(horariosReservas)
     bounds = [(0, None) for _ in range(len(valores_iniciales))] #Establezco limites de valores para cada turno. Inicio con todos positivos. Nunca reservas negativasd.
-    # bounds[0] = (valoresMeliIncrementados[0], None) #Reemplazo el límite del primer horario dado que tengo que arrancar siempre con lo que pide meli, no puedo arrancar con 0 repas.
+    bounds[0] = (valoresMeliIncrementados[0], None) #Reemplazo el límite del primer horario dado que tengo que arrancar siempre con lo que pide meli, no puedo arrancar con 0 repas.
     # bounds = [(valoresMeliIncrementados[0], None) for _ in range(len(valores_iniciales))]
     resultado_optimizacion = minimize(objetivo, valores_iniciales, method='Powell', bounds=bounds)
     configuracionOptima = [int(x) for x in resultado_optimizacion.x] #convierto valores en enteros.
