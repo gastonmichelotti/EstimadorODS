@@ -1,9 +1,5 @@
 {
-	"folders": [
-		{
-			"path": "../../../../Library/Application Support/Spectrasonics/STEAM/Keyscape"
-		}
-	],
+	"folders": [],
 	"settings": {
 		"git.ignoreLimitWarning": true
 	}
