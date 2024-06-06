@@ -95,13 +95,16 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
     def convertir_horas(value):
         
         #Convierto formato de horas de numero a string fixeando horarios 24 a horarios 00
-        hours = int(value) if int(value) < 24 else 0  # Parte entera para las horas
-        minutes = int(((value - hours) if hours != 0 else (value - 24)) * 60)  # Parte decimal convertida a minutos
+        hours = int(value) if int(value) < 24 else int(value) - 24  # Parte entera para las hora
+        minutes = int(((value - hours) * 60 if hours > 1 
+                       else ( (value - 25) if hours == 1 
+                       else (value - 24)) * 60))  # Parte decimal convertida a minutos
         
         # Formatear como HH:MM
         time_string = f"{hours:02d}:{minutes:02d}"
         
         return time_string
+
 
 
 
