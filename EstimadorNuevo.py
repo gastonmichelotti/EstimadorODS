@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import minimize
 import math  # Asegúrate de tener esta importación para math.ceil
 
-def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_meli=29):
+def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_meli=27):
     class Reserva:
         def __init__(self, horaDesde, horaHasta):
             self.horaDesde = horaDesde
