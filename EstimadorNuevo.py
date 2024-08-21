@@ -4,49 +4,63 @@ import numpy as np
 from scipy.optimize import minimize
 import math  # Asegúrate de tener esta importación para math.ceil
 
-def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_meli=22):
+def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_meli=29):
     class Reserva:
         def __init__(self, horaDesde, horaHasta):
             self.horaDesde = horaDesde
             self.horaHasta = horaHasta
 
-    horarios = np.arange(10, 25.5, 0.5)
+    horarios = np.arange(8, 25.5, 0.5)
     # horarioAux = np.arange(10, 25 - duracion, 1)
     # horariosReservas = [(i, i + duracion) for i in horarioAux]
-
-    # horariosReservas = [(10,14),(11,15),(12,16),(13,17),(14,18),(15,19),
-    #                     (16,20),(17,21),(18,22),(19,23),(19,22),(19,22.5),
-    #                     (19,21),(19.5,23.5),(19.5,22.5),(19.5,23),(19.5,21.5),
-    #                     (20,24),(20,23),(20,23.5),(20,22),(20.5,24.5),(20.5,23.5),
-    #                     (20.5,24),(20.5,22.5),(21,24),(21,24.5),(21,23),(22,24),(22,24.5)]
-
+    
     horariosReservas = [
-        (10, 14), 
-        (10.5, 14.5), 
-        (11, 15),
-        (11.5, 15.5), 
-        (12, 16),
-        (12.5, 16.5), 
-        (13, 17),
-        (13.5, 17.5), 
-        (14, 18),
-        (14.5, 18.5), 
-        (15, 19),
-        (15.5, 19.5), 
-        (16, 20),
-        (16.5, 20.5), 
-        (17, 21),
-        (17.5, 21.5), 
-        (18, 22),
-        (18.5, 22.5), 
-        (19, 23), (19, 22.5), (19, 22), (19, 21.5),
-        (19.5, 23.5), (19.5, 23), (19.5, 22.5),
-        (20, 24), (20, 23.5), (20, 23), (20, 22.5),
-        (20.5, 24.5), (20.5, 24), (20.5, 23.5),
-        (21, 25), (21, 24.5), (21, 24), (21, 23.5),
-        (21.5, 25.5), (21.5, 25), (21.5, 24.5),
-        # (22, 25.5), (22, 25), (22, 24.5),
-        # (22.5, 25.5)
+        (8,11),
+        (8,12),
+        (8.5,11.5),
+        (9,12),
+        (9,13),
+        (10,12),
+        (10,13),
+        (10,14),
+        (11,13),
+        (11,14),
+        (11,15),
+        (12,14),
+        (12,15),
+        (12,16),
+        (13,16),
+        (13,17),
+        (13.5,16),
+        (14,16),
+        (14,17),
+        (14,18),
+        (15,17),
+        (15,18),
+        (15,19),
+        (16,18),
+        (16,19),
+        (16,20),
+        (17,19),
+        (17,20),
+        (17,21),
+        (18,20),
+        (18,21),
+        (18,22),
+        (18.5,22.5),
+        (19,21),
+        (19,22),
+        (19,23),
+        (19,23.5),
+        (20,0),
+        (20,22),
+        (20,23),
+        (21,0),
+        (21,1),
+        (21,23),
+        (22,24),
+        (22,25),
+        (22,25.5)
         ]
 
     def obtener_valores_por_fecha(fecha):
@@ -68,6 +82,7 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
 
         valoresMeliIncrementados = [0]*len(valoresMeli)
 
+
         # Aplicar incremento a los valores de Meli desde el índice especificado
         for i in range(inicio_incremento_meli, len(valoresMeliIncrementados)):
             valoresMeliIncrementados[i] = math.ceil(valoresMeli[i] + valoresMeli[i] * incremento_pct_meli / 100)
@@ -88,6 +103,10 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=20, inicio_incremento_m
     def objetivo(config):
         disponibilidad = calcular_disponibilidad(config)
         if len(valoresMeliIncrementados) != len(disponibilidad):
+            print (valoresMeliIncrementados)
+            print (len(valoresMeliIncrementados))
+            print (disponibilidad)
+            print(len(disponibilidad))
             raise ValueError("Error: diferentes largos entre listas de disponibilidad meli-rapiboy")
         # return sum((rm - rd)**2 for rm, rd in zip(valoresMeliIncrementados, disponibilidad))##función costo. Acá hay que meter para que no haya mucho repartidor al dope.
         return sum((rm - rd)**2 for rm, rd in zip(valoresMeliIncrementados, disponibilidad)) + sum(config)

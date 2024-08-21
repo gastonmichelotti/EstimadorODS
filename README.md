@@ -39,7 +39,7 @@ Ej: incremento_pct = 10, implica que para todos los horarios se tomara una estim
 Default = 20
 - `inicio_incremento_meli`: Intervalo horario desde el cual se palica el `incremento_pct_meli`. Este incremento se aplicará desde el valor parametrizado hasta el final del día. 
 Default = 22.
-NOTA: los intervalos van desde las 10:00 hasta las 24:00 en intervalos de 00:30. Por lo que por que, por ejemplo, el intervalo 21 corresponde a las 20:00 hs. 
+NOTA: los intervalos van desde las 08:00 hasta las 00:30 en intervalos de 00:30. Por lo que por que, por ejemplo, el intervalo 21 corresponde a las 20:00 hs. 
 
 Ejemplo de cuerpo de solicitud:
 
