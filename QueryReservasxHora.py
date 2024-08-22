@@ -9,9 +9,11 @@ def generarQuery(fecha):
     queryReservasxHora = f"""
 
     DECLARE @Fecha DATE = '{fecha_formateada}';
-
+   
     WITH Horarios AS (
-        SELECT CAST(@Fecha AS DATETIME) + CAST('08:00' AS DATETIME) AS Horario
+    
+        SELECT 
+        CAST(@Fecha AS DATETIME) + CAST('08:00' AS DATETIME) AS Horario
         UNION ALL
         SELECT DATEADD(MINUTE, 30, Horario)
         FROM Horarios
@@ -19,6 +21,7 @@ def generarQuery(fecha):
     )
 
     SELECT
+ 	    CAST(H.Horario AS DATE) Fecha,
         FORMAT(H.Horario, 'HH:mm') AS Horario,
         COUNT(R.Id) AS TotalReservas,
         COUNT(CASE WHEN R.FechaLlego IS NOT NULL THEN 1 END) AS ReservasConLlegada
@@ -30,6 +33,10 @@ def generarQuery(fecha):
         AND R.idusuario = 23317
         AND R.cancelada = 0
     GROUP BY
+    	CAST(H.Horario AS DATE),
+        FORMAT(H.Horario, 'HH:mm')
+    ORDER BY
+    	CAST(H.Horario AS DATE),
         FORMAT(H.Horario, 'HH:mm');
 
     """
