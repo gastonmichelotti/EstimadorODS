@@ -52,11 +52,11 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_m
         (19,22),
         (19,23),
         (19,23.5),
-        (20,0),
+        (20,24),
         (20,22),
         (20,23),
-        (21,0),
-        (21,1),
+        (21,24),
+        (21,25),
         (21,23),
         (22,24),
         (22,25),
@@ -123,9 +123,6 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_m
         time_string = f"{hours:02d}:{minutes:02d}"
         
         return time_string
-
-
-
 
     valores_iniciales = [valoresMeliIncrementados[0]] * len(horariosReservas)
     bounds = [(0, None) for _ in range(len(valores_iniciales))] #Establezco limites de valores para cada turno. Inicio con todos positivos. Nunca reservas negativasd.
