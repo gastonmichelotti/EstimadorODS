@@ -14,8 +14,8 @@ def estimadorODS():
     # Llama a tu función con los parámetros usando valores por defecto
     resultado = Estimar(fecha,
                         incremento_pct if incremento_pct is not None else 0 ,
-                        incremento_pct_meli if incremento_pct_meli is not None else 50,
-                        inicio_incremento_meli if inicio_incremento_meli is not None else 27)
+                        incremento_pct_meli if incremento_pct_meli is not None else 0,
+                        inicio_incremento_meli if inicio_incremento_meli is not None else 0)
 
     return resultado
 

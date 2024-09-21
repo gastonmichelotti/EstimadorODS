@@ -24,7 +24,8 @@ def generarQuery(fecha):
  	    CAST(H.Horario AS DATE) Fecha,
         FORMAT(H.Horario, 'HH:mm') AS Horario,
         COUNT(R.Id) AS TotalReservas,
-        COUNT(CASE WHEN R.FechaLlego IS NOT NULL THEN 1 END) AS ReservasConLlegada
+        --COUNT(CASE WHEN R.FechaLlego IS NOT NULL THEN 1 END) AS ReservasConLlegada
+        COUNT(CASE WHEN R.idmotoboy IS NOT NULL THEN 1 END) AS ReservasConLlegada
     FROM
         Horarios H
     LEFT JOIN

@@ -4,13 +4,14 @@ import numpy as np
 from scipy.optimize import minimize
 import math  # Asegúrate de tener esta importación para math.ceil
 
-def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_meli=27):
+def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_meli=0):
     class Reserva:
         def __init__(self, horaDesde, horaHasta):
             self.horaDesde = horaDesde
             self.horaHasta = horaHasta
 
-    horarios = np.arange(8, 25.5, 0.5)
+    horarios = np.arange(8, 19, 0.5)
+    # horarios = np.arange(8, 25.5, 0.5)
     # horarioAux = np.arange(10, 25 - duracion, 1)
     # horariosReservas = [(i, i + duracion) for i in horarioAux]
     
@@ -26,41 +27,42 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_m
         (11,13),
         (11,14),
         (11,15),
-        (12,14),
+        # (12,14),
         (12,15),
         (12,16),
         (13,16),
         (13,17),
         (13.5,16),
-        (14,16),
+        # (14,16),
         (14,17),
         (14,18),
-        (15,17),
+        # (15,17),
         (15,18),
         (15,19),
-        (16,18),
+        # (16,18),
         (16,19),
         (16,20),
         (17,19),
-        (17,20),
-        (17,21),
-        (18,20),
-        (18,21),
-        (18,22),
-        (18.5,22.5),
-        (19,21),
-        (19,22),
-        (19,23),
-        (19,23.5),
-        (20,24),
-        (20,22),
-        (20,23),
-        (21,24),
-        (21,25),
-        (21,23),
-        (22,24),
-        (22,25),
-        (22,25.5)
+        # (17,20),
+        # (17,21),
+        # (18,20),
+        # (18,21),
+        # (18,22),
+        # (18.5,22.5),
+        # # (19,21),
+        # # (19,22),
+        # (19,23),
+        # (19,23.5),
+        # (20,24),
+        # # (20,22),
+        # (20,23),
+        # (20,25),
+        # (21,24),
+        # (21,25),
+        # # (21,23),
+        # # (22,24),
+        # (22,25),
+        # (22,25.5)
         ]
 
     def obtener_valores_por_fecha(fecha):
@@ -102,7 +104,7 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_m
 
     def objetivo(config):
         disponibilidad = calcular_disponibilidad(config)
-        if len(valoresMeliIncrementados) != len(disponibilidad):
+        if len(valoresMeliIncrementados[0:22]) != len(disponibilidad):
             print (valoresMeliIncrementados)
             print (len(valoresMeliIncrementados))
             print (disponibilidad)
@@ -128,9 +130,8 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=50, inicio_incremento_m
     bounds = [(0, None) for _ in range(len(valores_iniciales))] #Establezco limites de valores para cada turno. Inicio con todos positivos. Nunca reservas negativasd.
     bounds[0] = (valoresMeliIncrementados[0], None) #Reemplazo el límite del primer horario dado que tengo que arrancar siempre con lo que pide meli, no puedo arrancar con 0 repas.
     # bounds = [(valoresMeliIncrementados[0], None) for _ in range(len(valores_iniciales))]
-    resultado_optimizacion = minimize(objetivo, valores_iniciales, method='Powell', bounds=bounds)
+    resultado_optimizacion = minimize(objetivo, valores_iniciales, method='Powell', bounds=bounds) ##acoto de [0:22] para que solo estime hasta las 18:30 hs
     configuracionOptima = [int(x) for x in resultado_optimizacion.x] #convierto valores en enteros.
-
     if incremento_pct != 0:
         # Aplicar el incremento porcentual y redondear hacia arriba
         configuracionIncrementada = [math.ceil(x + x * incremento_pct / 100) for x in configuracionOptima]
