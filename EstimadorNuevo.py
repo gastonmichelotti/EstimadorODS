@@ -151,4 +151,25 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_me
         # "totalReservas" : sum(configuracionIncrementada)
     }
 
+    ##FIX HORRIBLE PARA QUE NO SE ROMPA EN PLATAFORMA RAPIBOY. PONGO LAS AUTOMÁTICAS AGREGADAS A MANO AL FINAL DE LOS TURNOS. 🤮
+    def agregar_turno(data, cantidad, hora_desde, hora_hasta):
+        nuevo_turno = {
+            "cantidad": cantidad,
+            "horaDesde": hora_desde,
+            "horaHasta": hora_hasta
+        }
+        data["turnos"].append(nuevo_turno)
+
+    # Ejemplo de uso, puedes agregar tantos turnos como desees
+    agregar_turno(final, 100, "19:00", "00:00")
+    agregar_turno(final, 100, "19:00", "23:00")
+    agregar_turno(final, 100, "19:00", "22:00")
+    agregar_turno(final, 100, "20:00", "01:00")
+    agregar_turno(final, 100, "20:00", "00:00")
+    agregar_turno(final, 100, "20:00", "23:00")
+    agregar_turno(final, 100, "21:00", "01:00")
+    agregar_turno(final, 100, "21:00", "00:00")
+    agregar_turno(final, 100, "22:00", "00:00")
+    agregar_turno(final, 100, "22:00", "01:00")
+
     return final
