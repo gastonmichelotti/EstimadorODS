@@ -41,9 +41,9 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_me
         (15,19),
         # (16,18),
         (16,19),
-        (16,20),
+        # (16,20),
         (17,19),
-        (17,20),
+        # (17,20),
         # (17,21),
         # (18,20),
         # (18,21),
@@ -51,6 +51,7 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_me
         # (18.5,22.5),
         # # (19,21),
         (19,22),
+        (19,24),
         (19,23),
         # (19,23.5),
         (20,24),
@@ -60,10 +61,11 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_me
         (21,24),
         (21,25),
         # # (21,23),
-        # # (22,24),
-        (22,25),
+        (22,24),
+        (22,25)
         # (22,25.5)
         ]
+
 
     def obtener_valores_por_fecha(fecha):
         url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTqP8Cc8coM8EqPpAHDiRtyX2sxd1gokCUCbR8erhVrs7O9hXXbW0oruGaZIDtXYvLAztNoLG645L0I/pub?output=csv"
@@ -145,9 +147,9 @@ def Estimar(fecha, incremento_pct=0, incremento_pct_meli=0, inicio_incremento_me
     disponibilidadFinal = calcular_disponibilidad(configuracionIncrementada)
 
     final = {
-        "turnos": Resultados
-        # "disponibilidadFinal": disponibilidadFinal,
-        # "necesidadesMeli": reservasMeli,
+        "turnos": Resultados,
+        "disponibilidadFinal": disponibilidadFinal,
+        "necesidadesMeli": reservasMeli
         # "totalReservas" : sum(configuracionIncrementada)
     }
 
