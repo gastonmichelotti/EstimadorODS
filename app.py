@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-from EstimadorNuevo import Estimar  # Importa tu código aquí
+from EstimadorNuevo import Estimar 
+from EstimadorViejo import Estimar as EstimarViejo # Importa tu código aquí
 
 app = Flask(__name__)
 
@@ -12,10 +13,10 @@ def estimadorODS():
     inicio_incremento_meli = data.get('inicio_incremento_meli')
 
     # Llama a tu función con los parámetros usando valores por defecto
-    resultado = Estimar(fecha,
+    resultado = EstimarViejo(fecha,
                         incremento_pct if incremento_pct is not None else 0 ,
-                        incremento_pct_meli if incremento_pct_meli is not None else 0,
-                        inicio_incremento_meli if inicio_incremento_meli is not None else 0)
+                        incremento_pct_meli if incremento_pct_meli is not None else 20,
+                        inicio_incremento_meli if inicio_incremento_meli is not None else 19)
 
     return resultado
 
