@@ -13,10 +13,10 @@ def estimadorODS():
     inicio_incremento_meli = data.get('inicio_incremento_meli')
 
     # Llama a tu función con los parámetros usando valores por defecto
-    resultado = EstimarViejo(fecha,
+    resultado = Estimar(fecha,
                         incremento_pct if incremento_pct is not None else 0 ,
-                        incremento_pct_meli if incremento_pct_meli is not None else 20,
-                        inicio_incremento_meli if inicio_incremento_meli is not None else 19)
+                        incremento_pct_meli if incremento_pct_meli is not None else 0,
+                        inicio_incremento_meli if inicio_incremento_meli is not None else 0)
 
     return resultado
 
