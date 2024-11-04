@@ -84,7 +84,7 @@ def consultaDB(query):
     return result
 
 def obtener_forecast(fecha):
-
+    
     import pandas as pd
     import requests
     from Resources.HorariosReservas import horariosReservas
@@ -110,7 +110,7 @@ def obtener_forecast(fecha):
 
     # Crear el diccionario combinando los horarios y los valores
     forecast_dict = dict(zip(horarios, valoresMeli))
-
+    
     return forecast_dict
 
 def calcular_disponibilidad(configuracion, horarios):
@@ -147,20 +147,40 @@ def convertir_horas(value):
     return time_string
 
 def agregar_turno(data, cantidad, hora_desde, hora_hasta):
-
     import numpy as np
     from Resources.HorariosReservas import horariosReservas
-    
+
+    # Convertir las horas a un formato numérico para facilitar la comparación
+    def hora_a_decimal(hora):
+        partes = list(map(int, hora.split(':')))
+        return partes[0] + partes[1] / 60.0
+
+    # Convertir las horas de los turnos actuales y el nuevo turno
+    hora_desde_decimal = hora_a_decimal(hora_desde)
+    hora_hasta_decimal = hora_a_decimal(hora_hasta)
+
     nuevo_turno = {
         "cantidad": cantidad,
         "horaDesde": hora_desde,
         "horaHasta": hora_hasta
     }
-    data["turnos"].append(nuevo_turno)
 
-    # Ejemplo de uso, puedes agregar tantos turnos como desees
-    # agregar_turno(final, 100, "19:00", "00:00")
-    # agregar_turno(final, 100, "19:00", "23:00")
+    # Verificar que data["turnos"] sea una lista de diccionarios
+    
+    for i, turno in enumerate(data):
+        turno_desde_decimal = hora_a_decimal(turno["horaDesde"])
+        turno_hasta_decimal = hora_a_decimal(turno["horaHasta"])
+
+        if turno_desde_decimal == hora_desde_decimal and turno_hasta_decimal == hora_hasta_decimal:
+            # Reemplazar el turno existente
+            data[i] = nuevo_turno
+            return
+
+    # Si no se encontró un turno igual, agregarlo
+    data.append(nuevo_turno)
+
+
+# Asegúrate de que la estructura de `data` tenga un campo 'turnos' como lista de diccionarios.
 
 def graficar_resultados(disponibilidadFinal, valoresMeli, reales, desde = 8, hasta = 1.5):
     ### DisponibilidadFinal, valoresMeli deben ser disponibilidades en forma de diccionario y deben coincidir(?)
@@ -173,6 +193,10 @@ def graficar_resultados(disponibilidadFinal, valoresMeli, reales, desde = 8, has
         hasta = hasta + 24
 
     horarios = [f"{int(hora):02d}:{int((hora - int(hora)) * 60):02d}" for hora in np.arange(desde, hasta, 0.5)]
+
+    if len(disponibilidadFinal) < 35:
+        for _ in range(35 - len(disponibilidadFinal)):
+            disponibilidadFinal[len(disponibilidadFinal)] = 0
 
     disponibilidadCargada = reales['TotalReservas']
     disponibilidadLlegada = reales['ReservasConLlegada']
@@ -204,12 +228,13 @@ def estimar_simple(fecha,
     import math 
     from Resources.HorariosReservas import horariosReservas
     import json
+    from Resources.QueryReservasxHora import generarQuery, buscarAutomaticas
 
     if horario_hasta < 5:
         horario_hasta = horario_hasta + 24
 
-    horarios = np.arange(horario_desde, horario_hasta, 0.5)    
-    
+    horarios = np.arange(horario_desde, horario_hasta, 0.5)
+
     # Obtenemos los requerimientos simples y sin procesar de meli y luego les aplicamos pre procesamiento según params.
     valoresMeli = obtener_forecast(fecha)
 
@@ -224,9 +249,12 @@ def estimar_simple(fecha,
             horario: (math.ceil(valor * factor_aumento) if incremento_previo_meli_desde <= horario <= incremento_previo_meli_hasta else valor)
             for horario, valor in valoresMeli.items()
         }
+    
+    valoresMeliProcesadosHorarios = {hora: valor for hora, valor in valoresMeliIncrementados.items() if horario_desde <= hora < horario_hasta}
+
 
     def objetivo(config):
-        valoresMeliIncrementados_array = [valoresMeliIncrementados[horario] for horario in sorted(valoresMeliIncrementados.keys())]
+        valoresMeliIncrementados_array = [valoresMeliProcesadosHorarios[horario] for horario in sorted(valoresMeliProcesadosHorarios.keys())]
         disponibilidad = calcular_disponibilidad(config, horarios)
         disponibilidad_array = [disponibilidad[horario] for horario in sorted(disponibilidad.keys())]
 
@@ -252,6 +280,19 @@ def estimar_simple(fecha,
         configuracionIncrementada = configuracionOptima
         
     Resultados = [{'horaDesde': convertir_horas(horariosReservas[i][0]), 'horaHasta': convertir_horas(horariosReservas[i][1]), 'cantidad': configuracionIncrementada[i]} for i in range(len(horariosReservas))]
+
+    # Chequeamos creación de automáticas en caso de que haya parametros desde/hasta
+    # Editar el código para iterar sobre un DataFrame llamado automáticas
+
+    if horario_hasta < 25:
+        automaticas = consultaDB(buscarAutomaticas(fecha))
+        print('CACA: ', automaticas)
+        
+        # Iterar sobre el DataFrame fila por fila
+        for _, auto in automaticas.iterrows():
+            if auto['Desde'] >= 19:
+                agregar_turno(Resultados, auto['Cantidad'], auto['HoraDesde'], auto['HoraHasta'])
+
 
     disponibilidadFinal = calcular_disponibilidad(configuracionIncrementada, horarios)
 
@@ -284,7 +325,7 @@ def probar_estimar_simple(fecha,
     from scipy.optimize import minimize
     import json
     from Resources.HorariosReservas import horariosReservas
-    from QueryReservasxHora import generarQuery
+    from Resources.QueryReservasxHora import generarQuery, buscarAutomaticas
 
     estimacion, dispoFinal, valoresMeli = estimar_simple(fecha, 
                                                         horario_desde,

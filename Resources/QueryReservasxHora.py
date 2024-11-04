@@ -43,3 +43,37 @@ def generarQuery(fecha):
     """
 
     return queryReservasxHora
+
+
+def buscarAutomaticas(fecha):
+
+    from datetime import datetime
+
+    fechafix = datetime.strptime(fecha, '%d/%m/%Y')
+    fecha_formateada = fechafix.strftime('%Y-%m-%d')
+
+    queryautomaticas = f"""
+
+    DECLARE @Fecha DATE = '{fecha_formateada}';
+   
+    SELECT
+    DATEPART(hour, r.fechaDesde) AS Desde,
+    FORMAT(r.fechaDesde, 'HH:mm') AS HoraDesde,
+    DATEPART(hour, r.fechaHasta) AS Hasta,
+    FORMAT(r.fechaHasta, 'H:mm') AS HoraHasta,
+    COUNT(r.id) AS Cantidad
+    FROM 
+    reservaxmotoboy r 
+    WHERE 
+    idusuario = 23317
+    AND r.fecha = @Fecha
+    AND cancelada = 0
+    GROUP BY
+    DATEPART(hour, r.fechaDesde),
+    FORMAT(r.fechaDesde, 'HH:mm'),
+    DATEPART(hour, r.fechaHasta),
+    FORMAT(r.fechaHasta, 'H:mm');
+
+    """
+
+    return queryautomaticas
