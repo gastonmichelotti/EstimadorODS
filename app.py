@@ -8,7 +8,9 @@ app = Flask(__name__)
 @app.route('/estimadorODS', methods=['POST'])
 def estimadorODS():
     data = request.get_json()
-    fecha = data.get('fecha') ##DEBE PASAR EN FORMATO dd/mm/YYYY
+    fecha = data.get('fecha')
+    horario_desde = data.get('horario_desde')
+    horario_hasta = data.get('horario_hasta') ##DEBE PASAR EN FORMATO dd/mm/YYYY
     incremento_previo_meli = data.get('incremento_previo_meli') 
     incremento_previo_meli_desde = data.get('incremento_previo_meli_desde')
     incremento_previo_meli_hasta = data.get('incremento_previo_meli_hasta')
