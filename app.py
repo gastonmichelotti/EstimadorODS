@@ -1,22 +1,28 @@
 from flask import Flask, request, jsonify
 from EstimadorNuevo import Estimar 
 from EstimadorViejo import Estimar as EstimarViejo # Importa tu código aquí
+from EstimadorSimple import estimar_simple_interface
 
 app = Flask(__name__)
 
 @app.route('/estimadorODS', methods=['POST'])
 def estimadorODS():
     data = request.get_json()
-    fecha = data.get('fecha')
-    incremento_pct = data.get('incremento_pct') 
-    incremento_pct_meli = data.get('incremento_pct_meli') 
-    inicio_incremento_meli = data.get('inicio_incremento_meli')
+    fecha = data.get('fecha') ##DEBE PASAR EN FORMATO dd/mm/YYYY
+    incremento_previo_meli = data.get('incremento_previo_meli') 
+    incremento_previo_meli_desde = data.get('incremento_previo_meli_desde')
+    incremento_previo_meli_hasta = data.get('incremento_previo_meli_hasta')
+    incremento_posterior_general = data.get('incremento_posterior_general') 
 
     # Llama a tu función con los parámetros usando valores por defecto
-    resultado = Estimar(fecha,
-                        incremento_pct if incremento_pct is not None else 0 ,
-                        incremento_pct_meli if incremento_pct_meli is not None else 0,
-                        inicio_incremento_meli if inicio_incremento_meli is not None else 0)
+    resultado = estimar_simple_interface(fecha,
+                        horario_desde if horario_desde is not None else 8,
+                        horario_hasta if horario_hasta is not None else 1.5,
+                        incremento_previo_meli if incremento_previo_meli is not None else 0 ,
+                        incremento_previo_meli_desde if incremento_previo_meli_desde is not None else 0 ,
+                        incremento_previo_meli_hasta if incremento_previo_meli_hasta is not None else 0 ,
+                        incremento_posterior_general if incremento_posterior_general is not None else 0 ,
+                        )
 
     return resultado
 
