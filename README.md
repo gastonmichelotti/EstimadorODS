@@ -33,19 +33,21 @@ Para hacer solicitudes a la API, envíe una solicitud POST a `http://localhost:5
 
 - `fecha`: La fecha para la cual se quiere hacer la estimación (en formato `DD/MM/YYYY`).
 - `incremento_previo_meli`: Porcentaje de incremento previo aplicado al forecast de Meli en un rango específico de horarios. Default = 0.
-- `incremento_previo_meli_desde`: Intervalo horario desde el cual se aplica el `incremento_previo_meli`. Default = 0. Va en valores decimales y pasando las 00 equivale a las 24. ej 25.5
-- `incremento_previo_meli_hasta`: Intervalo horario hasta el cual se aplica el `incremento_previo_meli`. Default = 0. Default = 0. Va en valores decimales y pasando las 00 equivale a las 24. ej 25.5
+- `incremento_previo_meli_desde`: Intervalo horario desde el cual se aplica el `incremento_previo_meli`. Default = 19. 
+- `incremento_previo_meli_hasta`: Intervalo horario hasta el cual se aplica el `incremento_previo_meli`.  Default = 1.5. 
 - `incremento_posterior_general`: Porcentaje de incremento aplicado a toda la configuración final. Default = 0.
 
 ### Ejemplo de cuerpo de solicitud:
 
 ```json
 {
-    "fecha": "02/10/2024",
-    "incremento_previo_meli": 0,
-    "incremento_previo_meli_desde": 0,
+    "fecha": "2/10/2024", ##Fecha
+    "horaDesde": 8, 
+    "horaHasta": 1.5,
+    "incremento_previo_meli": 0, 
+    "incremento_previo_meli_desde": 0,  
     "incremento_previo_meli_hasta": 0,
-    "incremento_posterior_general": 0
+    "incremento_posterior_general": 0  
 }
 ```
 
@@ -69,6 +71,7 @@ La API devolverá una respuesta JSON con los detalles de la estimación realizad
             "horaDesde": "08:00",
             "horaHasta": "11:00",
             "cantidad": 15
+            
         },
         {
             "horaDesde": "11:00",

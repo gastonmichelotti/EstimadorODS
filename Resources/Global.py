@@ -214,6 +214,9 @@ def estimar_simple(fecha,
     valoresMeli = obtener_forecast(fecha)
 
     valoresMeliIncrementados = valoresMeli
+
+    if incremento_previo_meli_hasta < 5:
+        incremento_previo_meli_hasta = incremento_previo_meli_hasta + 24
     
     if incremento_previo_meli > 0:
         factor_aumento = 1 + (incremento_previo_meli / 100)
