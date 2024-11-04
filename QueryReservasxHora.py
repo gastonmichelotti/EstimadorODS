@@ -3,7 +3,7 @@ def generarQuery(fecha):
 
     from datetime import datetime
 
-    fechafix = datetime.strptime(fecha + '/' + '2024', '%d/%m/%Y')
+    fechafix = datetime.strptime(fecha, '%d/%m/%Y')
     fecha_formateada = fechafix.strftime('%Y-%m-%d')
 
     queryReservasxHora = f"""
